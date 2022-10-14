@@ -38,7 +38,10 @@ def solve_board(*, board: List[List[int]]) -> List[List[int]]:
         sol = np.zeros((9, 9), dtype=int)
         for k in range(9):
             sol += np.rint(np.multiply(X['X%s' % (k + 1)].value, k + 1)).astype(int)
+        sol = sol.tolist()
+
     except Exception as e:
         print(e)
+        sol = board.tolist()
 
-    return sol.tolist()
+    return sol
