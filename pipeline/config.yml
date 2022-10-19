@@ -1,0 +1,7 @@
+
+solver_mappings:
+  solver: GLPK_MI
+
+image_mappings:
+  percentFillThresh: 0.03
+
