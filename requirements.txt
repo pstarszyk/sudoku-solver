@@ -1,3 +1,7 @@
 numpy
 cvxopt
 cvxpy
+imutils
+scikit-image
+opencv-python
+pytesseract
