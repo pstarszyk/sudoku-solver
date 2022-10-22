@@ -11,7 +11,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE_PATH = ROOT / 'examples'
 
-
 # reject images with resolution < x, modify parameters in transforms based on resolution
 def main() -> List[List[int]]:
     path = EXAMPLE_PATH / options.image_sample

@@ -1,5 +1,7 @@
 import cvxpy as cp
 import numpy as np
+
+from config.core import config
 from typing import List
 
 
@@ -34,7 +36,7 @@ def solve_board(*, board: List[List[int]]) -> List[List[int]]:
     try:
         objective = cp.Minimize(1)
         prob = cp.Problem(objective, constraints)
-        prob.solve(solver=cp.GLPK_MI)
+        prob.solve(solver=config.pipeline_config.solver_mappings['solver'])
         sol = np.zeros((9, 9), dtype=int)
         for k in range(9):
             sol += np.rint(np.multiply(X['X%s' % (k + 1)].value, k + 1)).astype(int)

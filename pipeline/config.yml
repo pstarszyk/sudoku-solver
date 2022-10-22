@@ -3,5 +3,11 @@ solver_mappings:
   solver: GLPK_MI
 
 image_mappings:
-  percentFillThresh: 0.03
+  resize_x: 768
+  resize_y: 817
+  stack_size: 5
+  crop_length_tb: 20
+  crop_length_rl: 5
+
+percent_fill_thresh: 0.02
 

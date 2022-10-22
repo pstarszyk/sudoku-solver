@@ -3,6 +3,7 @@ import imutils
 import cv2
 import pytesseract
 
+from config.core import config
 from imutils.perspective import four_point_transform
 from skimage.segmentation import clear_border
 from typing import List
@@ -93,8 +94,8 @@ def extract_digit(*, cell: np.ndarray) -> np.ndarray:
 
     # check percentage of non-empty pixels
     (h, w) = thresh.shape
-    portionFilled = cv2.countNonZero(mask) / float(w * h)
-    if portionFilled < 0.02:
+    portionFilled = cv2.countNonZero(mask) / float(h * w)
+    if portionFilled < config.pipeline_config.percent_fill_thresh:
         return None
     # apply the mask to the thresholded cell
     digit = cv2.bitwise_and(src1=thresh,
@@ -132,13 +133,17 @@ def crop_digit(*, digit: np.ndarray) -> np.ndarray:
             break
         bottom -= 1
 
-    cropped_digit = np.zeros((bottom - top + 2 * 20, right - left + 2 * 5), dtype="uint8")
-    cropped_digit[20: (20 + bottom - top), 5: 5 + (right - left)] = digit[top: bottom, left: right]
+    y = config.pipeline_config.image_mappings['crop_length_tb']
+    x = config.pipeline_config.image_mappings['crop_length_rl']
+
+    cropped_digit = np.zeros((bottom - top + 2 * y, right - left + 2 * x), dtype="uint8")
+    cropped_digit[y: (y + bottom - top), x: x + (right - left)] = digit[top: bottom, left: right]
     return cropped_digit
 
 
 def create_stack(*, digit: np.ndarray) -> np.ndarray:
-    digits = np.hstack(tuple(digit for _ in range(5)))
+    stack_size = config.pipeline_config.image_mappings['stack_size']
+    digits = np.hstack(tuple(digit for _ in range(stack_size)))
     return digits
 
 
@@ -161,9 +166,12 @@ def predict_number(*, digit: np.ndarray) -> int:
 
 
 def extract_array(*, image: np.ndarray) -> List[List[int]]:
+    y = config.pipeline_config.image_mappings['resize_y']
+    x = config.pipeline_config.image_mappings['resize_x']
+
     result = [[0 for _ in range(9)] for _ in range(9)]
     image = cv2.resize(src=image,
-                       dsize=(768, 817),
+                       dsize=(x, y),
                        interpolation=cv2.INTER_AREA)
     board = locate_board(image=image)
 
