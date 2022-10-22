@@ -158,7 +158,6 @@ def predict_number(*, digit: np.ndarray) -> int:
     if any(char.isdigit() for char in chars):
         integer = get_num(chars=chars)
         return integer
-    return
 
 
 def extract_array(*, image: np.ndarray) -> List[List[int]]:
