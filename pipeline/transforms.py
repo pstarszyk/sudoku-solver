@@ -12,10 +12,10 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 
 def locate_board(*, image: np.ndarray) -> np.ndarray:
     '''
+    :param image: raw image from camera
+    :return: cropped and rotated image of sudoku board only
     find bounding edges of sudoku board and apply linear
     transformation to bounded board to obtain rectangular form
-    :param image:
-    :return:
     '''
 
     # adaptive thresholding
@@ -64,43 +64,51 @@ def locate_board(*, image: np.ndarray) -> np.ndarray:
 
 
 def extract_digit(*, cell: np.ndarray) -> np.ndarray:
-    # apply automatic thresholding to the cell and then clear any
-    # connected borders that touch the border of the cell
-    thresh = cv2.threshold(cell, 0, 255,
-                           cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-    thresh = clear_border(thresh)
-    # find contours in the thresholded cell
-    cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
-                            cv2.CHAIN_APPROX_SIMPLE)
-    cnts = imutils.grab_contours(cnts)
-    # if no contours were found than this is an empty cell
+    '''
+    :param cell: raw image of cell
+    :return: clean cell image with borders removed
+    '''
+    # apply thresholding
+    thresh = cv2.threshold(src=cell,
+                           thresh=0,
+                           maxval=255,
+                           type=cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+
+    # clear gridlines near the borders
+    thresh = clear_border(labels=thresh)
+
+    # get contours
+    cnts = cv2.findContours(image=thresh,
+                            mode=cv2.RETR_EXTERNAL,
+                            method=cv2.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts=cnts)
+
     if len(cnts) == 0:
         return None
-    # otherwise, find the largest contour in the cell and create a
-    # mask for the contour
+
+    # get the largest contour and create mask
     c = max(cnts, key=cv2.contourArea)
     mask = np.zeros(thresh.shape, dtype="uint8")
     cv2.drawContours(mask, [c], -1, 255, -1)
-    # compute the percentage of masked pixels relative to the total
-    # area of the image
+
+    # check percentage of non-empty pixels
     (h, w) = thresh.shape
-    percentFilled = cv2.countNonZero(mask) / float(w * h)
-    # if less than 3% of the mask is filled then we are looking at
-    # noise and can safely ignore the contour
-    if percentFilled < 0.03:
+    portionFilled = cv2.countNonZero(mask) / float(w * h)
+    if portionFilled < 0.02:
         return None
     # apply the mask to the thresholded cell
-    digit = cv2.bitwise_and(thresh, thresh, mask=mask)
-    # check to see if we should visualize the masking step
-    # return the digit to the calling function
+    digit = cv2.bitwise_and(src1=thresh,
+                            src2=thresh,
+                            mask=mask)
     return digit
 
 
 def crop_digit(*, digit: np.ndarray) -> np.ndarray:
     '''
-
-    :param digit:
-    :return:
+    centers the digit and provides fixed buffers on
+    side and top to be consistent with all other cells
+    :param digit: clean cell image with borders removed
+    :return: centered image
     '''
 
     m, n = digit.shape
@@ -145,19 +153,19 @@ def get_num(*, chars: str) -> int:
 
 
 def predict_number(*, digit: np.ndarray) -> int:
-    #digit = 255 - digit
     digit_stack = create_stack(digit=digit)
     chars = pytesseract.image_to_string(digit_stack)
-    #print(chars)
     if any(char.isdigit() for char in chars):
         integer = get_num(chars=chars)
-        #print(integer)
         return integer
     return
 
 
 def extract_array(*, image: np.ndarray) -> List[List[int]]:
     result = [[0 for _ in range(9)] for _ in range(9)]
+    image = cv2.resize(src=image,
+                       dsize=(768, 817),
+                       interpolation=cv2.INTER_AREA)
     board = locate_board(image=image)
 
     vpixels, hpixels = board.shape
