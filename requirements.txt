@@ -7,3 +7,5 @@ opencv-python
 pytesseract
 strictyaml
 pydantic
+fastapi
+uvicorn
