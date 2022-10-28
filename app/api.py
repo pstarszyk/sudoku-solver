@@ -9,17 +9,17 @@ sys.path += [ROOT.__str__(), APP_PATH.__str__(), PIPELINE_PATH.__str__()]
 
 from pipeline.image_transform import extract_array
 from pipeline.integer_program import solve_board
-from fastapi import FastAPI, File, UploadFile
+from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import HTMLResponse
 from typing import List, Any
 from PIL import Image
 import numpy as np
 import io
 
-app = FastAPI(title="sudoku-solver")
+api_router = APIRouter()
 
 
-@app.get("/solve")
+@api_router.get("/solve")
 async def main():
     content = """
         <body>
@@ -34,7 +34,7 @@ async def main():
     return HTMLResponse(content=content)
 
 
-@app.post("/solve")
+@api_router.post("/solve")
 async def solve(files: List[UploadFile] = File(...)) -> Any:
     for file in files:
         contents = await file.read()
@@ -42,8 +42,3 @@ async def solve(files: List[UploadFile] = File(...)) -> Any:
         board = extract_array(image=image)
         solution = solve_board(board=board)
     return {"result": solution}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="localhost", port=8001)

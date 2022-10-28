@@ -1,9 +1,9 @@
-from fastapi import APIRouter, FastAPI, Request
+from fastapi import APIRouter, FastAPI#, Request
 from api import api_router
 
 
 app = FastAPI(
-    title="test"
+    title="sudoku-solver"
 )
 
 root_router = APIRouter()
@@ -11,7 +11,7 @@ root_router = APIRouter()
 
 @root_router.get("/")
 def root():
-    return {"message": "Hello World"}
+    return {"message": "Welcome to the sudoku-solver app"}
 
 
 app.include_router(api_router)
