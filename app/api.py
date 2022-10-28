@@ -10,7 +10,7 @@ sys.path += [ROOT.__str__(), APP_PATH.__str__(), PIPELINE_PATH.__str__()]
 from pipeline.image_transform import extract_array
 from pipeline.integer_program import solve_board
 from fastapi import APIRouter, File, UploadFile
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from typing import List, Any
 from PIL import Image
 import numpy as np
@@ -41,4 +41,4 @@ async def solve(files: List[UploadFile] = File(...)) -> Any:
         image = np.array(Image.open(io.BytesIO(contents)))
         board = extract_array(image=image)
         solution = solve_board(board=board)
-    return {"result": solution}
+    return Response(content=contents, media_type="image/png")
