@@ -6,7 +6,7 @@ import pytesseract
 from config.core import config
 from imutils.perspective import four_point_transform
 from skimage.segmentation import clear_border
-from typing import List
+from typing import List, Tuple
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
@@ -165,7 +165,7 @@ def predict_number(*, digit: np.ndarray) -> int:
         return integer
 
 
-def extract_array(*, image: np.ndarray) -> List[List[int]]:
+def extract_array(*, image: np.ndarray) -> Tuple[List[List[int]], np.ndarray]:
     y = config.pipeline_config.image_mappings['resize_y']
     x = config.pipeline_config.image_mappings['resize_x']
 
@@ -186,4 +186,4 @@ def extract_array(*, image: np.ndarray) -> List[List[int]]:
                 digit = predict_number(digit=digit)
                 if digit is not None:
                     result[row][col] = digit
-    return result
+    return result, board
