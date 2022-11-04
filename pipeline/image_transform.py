@@ -8,8 +8,6 @@ from imutils.perspective import four_point_transform
 from skimage.segmentation import clear_border
 from typing import List, Tuple
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
 
 def locate_board(*, image: np.ndarray) -> np.ndarray:
     '''
