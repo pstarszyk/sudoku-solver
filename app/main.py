@@ -1,5 +1,14 @@
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+APP_PATH = ROOT / "app"
+PIPELINE_PATH = ROOT / "pipeline"
+
+sys.path += [ROOT.__str__(), APP_PATH.__str__(), PIPELINE_PATH.__str__()]
+
+from app.api import api_router
 from fastapi import APIRouter, FastAPI
-from api import api_router
 
 
 app = FastAPI(
