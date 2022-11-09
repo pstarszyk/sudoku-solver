@@ -1,12 +1,16 @@
-FROM python:3.8.8
+FROM ubuntu:22.04
 
 WORKDIR /opt/sudoku-solver
 ADD . /opt/sudoku-solver
 
 # update APT repos and apply patches
 RUN apt-get update \
-    && apt-get install -y apt-utils \
-    && apt-get install -y software-properties-common
+    && apt-get install -y software-properties-common gcc \
+    && add-apt-repository -y ppa:deadsnakes/ppa
+
+# python
+RUN apt-get install -y python3-distutils \
+    && apt-get install -y python3-pip
 
 # install cv2 dependencies
 RUN apt-get install -y ffmpeg libsm6 libxext6
@@ -15,11 +19,10 @@ RUN apt-get install -y ffmpeg libsm6 libxext6
 RUN add-apt-repository -y ppa:alex-p/tesseract-ocr5 \
     && apt install -y tesseract-ocr
 
-ENV TESSDATA_PREFIX /usr/share/tesseract-ocr/4.00/tessdata
+ENV TESSDATA_PREFIX /usr/share/tesseract-ocr/5/tessdata
 
 # requirements
-RUN pip install --upgrade pip \
-    && pip install -r /opt/sudoku-solver/requirements.txt
+RUN  pip3 install -r /opt/sudoku-solver/requirements.txt
 
 # permissions
 RUN chmod +x /opt/sudoku-solver/app/run.sh
