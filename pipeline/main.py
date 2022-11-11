@@ -14,6 +14,8 @@ EXAMPLE_PATH = ROOT / 'examples'
 def set_environment_variables() -> None:
     path = options.tessdata
     os.environ["TESSDATA_PREFIX"] = path
+
+    # Update PATH. Do not need to update on Linux - default install in /usr/bin
     if 'C:' in path:
         tesseract = path.replace(r"\tessdata", "")
         os.environ["PATH"] += ";%s" % tesseract
