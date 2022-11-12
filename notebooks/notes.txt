@@ -1,0 +1,49 @@
+board2
+- needs higher top and bottom on the image stack (board1 6 board2 15)
+
+resize 
+
+- rotate image based on initial dimension
+- modify setup.sh to use virtualenv instead (cant modify pything version with python -m venv)
+
+
+
+
+
+
+https://stackoverflow.com/questions/69187159/post-images-with-php-curl-to-python-fastapi
+https://stackoverflow.com/questions/55873174/how-do-i-return-an-image-in-fastapi
+
+
+return solved image in /solve:
+- during image processing, hold output of locate_board() in memory 
+- during solve, hold original array (with 0) in memory
+- create duplicate array of zeros and write numbers in green in correct places then + to the image from first step
+
+
+
+$ docker build -t vboxuser/app
+$ docker run -p 8001:8001 -e PORT=8001 vboxuser/app
+
+https://www.howtoforge.com/tutorial/how-to-create-docker-images-with-dockerfile/
+
+docker run -p 8001:8001 -e PORT=8001 app
+
+
+178
+
+---------------------------------------------------------
+You can use the find command:
+
+find YOUR_STARTING_DIRECTORY -type d -name "*99966*" -print
+Example:
+
+find ~ -type d -name "*99966*" -print
+
+
+----------------------------------------
+
+apt-get install python3-dev
+apt-get install tesseract-ocr libtesseract-dev libleptonica-dev pkg-config
+pip install tesserocr
+
