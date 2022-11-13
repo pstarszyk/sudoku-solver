@@ -1,12 +1,15 @@
 import numpy as np
 import imutils
 import cv2
-import pytesseract
+import tesserocr
+from PIL import Image
 
 from config.core import config
 from imutils.perspective import four_point_transform
 from skimage.segmentation import clear_border
 from typing import List, Tuple
+
+tessAPI = tesserocr.PyTessBaseAPI()
 
 
 def locate_board(*, image: np.ndarray) -> np.ndarray:
@@ -157,7 +160,8 @@ def get_num(*, chars: str) -> int:
 
 def predict_number(*, digit: np.ndarray) -> int:
     digit_stack = create_stack(digit=digit)
-    chars = pytesseract.image_to_string(digit_stack)
+    tessAPI.SetImage(Image.fromarray(digit_stack))
+    chars = tessAPI.GetUTF8Text()
     if any(char.isdigit() for char in chars):
         integer = get_num(chars=chars)
         return integer

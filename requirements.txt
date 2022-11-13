@@ -5,10 +5,10 @@ tornado==6.2
 imutils==0.5.4
 scikit-image==0.19.3
 opencv-python==4.6.0.66
-pytesseract==0.3.10
 strictyaml==1.6.2
 pydantic==1.10.2
 python-multipart==0.0.5
+tesserocr==2.5.2
 fastapi==0.85.1
 uvicorn==0.19.0
 Pillow==9.2.0
