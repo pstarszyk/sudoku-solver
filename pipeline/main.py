@@ -8,7 +8,7 @@ from pprint import pprint
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXAMPLE_PATH = ROOT / 'examples'
+EXAMPLE_PATH = ROOT / 'docs/images'
 
 
 def set_environment_variables() -> None:
@@ -32,7 +32,7 @@ def main() -> List[List[int]]:
 
 if __name__ == "__main__":
     define("tessdata", default=None, type=str, help="Path to tessdata on your machine. ex Windows = C:\Program Files\Tesseract-OCR\tessdata Linux = /usr/share/tesseract-ocr/5/tessdata")
-    define("image_sample", default=None, type=str, help="Name of image file in examples folder.")
+    define("image_sample", default=None, type=str, help="Name of image file in docs folder.")
     options.parse_command_line()
     set_environment_variables()
     from image_transform import extract_array
