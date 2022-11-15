@@ -6,7 +6,7 @@
 
 # Run the App
 
-First run the following to clone repo and build image
+Run the following to clone repo, build and run image
 
 ```
 git clone git@github.com:pstarszyk/sudoku-solver.git
