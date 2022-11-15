@@ -8,12 +8,12 @@
 
 First run the following to clone repo and build image
 
-`
+```
 git clone git@github.com:pstarszyk/sudoku-solver.git
 cd sudoku-solver
 docker build -t app .
 docker run -p 8001:8001 -e PORT=8001 app
-`
+```
 
-Now your app is running on endpoint `http://0.0.0.0:8001/solve`
+Now your app is running and you can call endpoint `http://0.0.0.0:8001/solve`
 
