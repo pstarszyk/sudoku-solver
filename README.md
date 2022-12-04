@@ -27,3 +27,5 @@ curl -X POST
 http://0.0.0.0:8001/solve
 --output <path/to/your/output.jpg>
 ```
+
+![](https://github.com/pstarszyk/sudoku-solver/blob/main/docs/gifs/curl.gif)
