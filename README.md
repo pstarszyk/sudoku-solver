@@ -19,7 +19,7 @@ Now your app is running and you can call endpoint `http://0.0.0.0:8001/solve`
 
 # cURL
 
-If you have your own app in which you want to call this endpoint or you just want to call it from terminal, simply use the followu curl command sends a POST request of your image file and outputs the bytes response as JPG in your specified path. 
+If you have your own app in which you want to call this endpoint or you just want to call it from terminal, the below curl command sends a POST request of your image file and outputs the bytes response as JPG in your specified path. 
 
 ```
 curl -X POST 
