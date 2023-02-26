@@ -4,7 +4,7 @@ import cv2
 import tesserocr
 from PIL import Image
 
-from config.core import config
+from pipeline.config.core import config
 from imutils.perspective import four_point_transform
 from skimage.segmentation import clear_border
 from typing import List, Tuple

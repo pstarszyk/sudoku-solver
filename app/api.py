@@ -1,12 +1,3 @@
-import sys
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parent.parent
-APP_PATH = ROOT / "app"
-PIPELINE_PATH = ROOT / "pipeline"
-
-sys.path += [ROOT.__str__(), APP_PATH.__str__(), PIPELINE_PATH.__str__()]
-
 from pipeline.image_transform import extract_array
 from pipeline.integer_program import solve_board
 from pipeline.output_image import generate_content
