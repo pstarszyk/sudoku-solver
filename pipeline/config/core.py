@@ -3,8 +3,8 @@ from pydantic import BaseModel
 from strictyaml import YAML, load
 from typing import Dict
 
-PIPELINE_ROOT = Path(__file__).resolve().parent.parent
-CONFIG_FILE_PATH = PIPELINE_ROOT / "config.yml"
+CONFIG_ROOT = Path(__file__).resolve().parent
+CONFIG_FILE_PATH = CONFIG_ROOT / "config.yml"
 
 
 class PipelineConfig(BaseModel):
